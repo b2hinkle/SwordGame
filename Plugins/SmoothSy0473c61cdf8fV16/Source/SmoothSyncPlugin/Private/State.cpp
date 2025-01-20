@@ -41,11 +41,11 @@ void SmoothState::Lerp(SmoothState *targetState, SmoothState *start, SmoothState
 void SmoothState::defaultTheVariables()
 {
 	ownerTimestamp = 0;
-	position = FVector::ZeroVector;
-	rotation = FQuat::Identity;
-	scale = FVector::ZeroVector;
-	velocity = FVector::ZeroVector;
-	angularVelocity = FVector::ZeroVector;
+	position = FVector3f::ZeroVector;
+	rotation = FQuat4f::Identity;
+	scale = FVector3f::ZeroVector;
+	velocity = FVector3f::ZeroVector;
+	angularVelocity = FVector3f::ZeroVector;
 	atPositionalRest = false;
 	atRotationalRest = false;
 	teleport = false;
@@ -90,8 +90,8 @@ void SmoothState::copyFromSmoothSync(USmoothSync *smoothSyncScript)
 	}
 	else
 	{
-		velocity = FVector::ZeroVector;
-		angularVelocity = FVector::ZeroVector;
+		velocity = FVector3f::ZeroVector;
+		angularVelocity = FVector3f::ZeroVector;
 	}
 	if (smoothSyncScript->characterMovementComponent != nullptr)
 	{
@@ -110,13 +110,14 @@ void SmoothState::copyFromState(SmoothState *state)
 	velocity = state->velocity;
 	angularVelocity = state->angularVelocity;
 	movementMode = state->movementMode;
+	wasMovementModeReceived = state->wasMovementModeReceived;
 	teleport = state->teleport;
 	atPositionalRest = state->atPositionalRest;
 	atRotationalRest = state->atRotationalRest;
 }
 
-FVector SmoothState::rebasedPosition(FIntVector localWorldOrigin)
+FVector3f SmoothState::rebasedPosition(FIntVector localWorldOrigin)
 {
 	FIntVector relativeOrigin = origin - localWorldOrigin;
-	return position + (FVector)relativeOrigin; 
+	return position + (FVector3f)relativeOrigin;
 }

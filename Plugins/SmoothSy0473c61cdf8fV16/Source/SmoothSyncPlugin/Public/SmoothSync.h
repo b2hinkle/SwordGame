@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Kismet/GameplayStatics.h"
-#include <algorithm>    // std::max
 #include "Runtime/Engine/Classes/GameFramework/MovementComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
 #include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
@@ -17,6 +16,9 @@
 
 class SmoothState;
 class NetworkState;
+
+//typedef FVector FVector3f;
+//typedef FQuat FQuat4f;
 
 /// <summary>The variables that will be synced.</summary>
 UENUM(BlueprintType)
@@ -56,6 +58,12 @@ private:
 	
 	int samePositionSentCount = 0;
 	int sameRotationSentCount = 0;
+	bool wasAttachedLastTick = false;
+
+	/// <summary> Used to know when the owner has changed. Not an identifier. </summary>
+	uint8 previousReceivedOwnerInt = 1;
+
+	AController* owningControllerLastFrame = nullptr;
 
 public:
 
@@ -211,7 +219,7 @@ public:
 
 	/// <summary>The rotation won't be set on non-owned objects unless it changed this much.</summary>
 	/// <remarks>
-	/// Set to 0 to always update the rotation of non-owned objects if it has changed, and to use one less FQuat.AngularDistance() check per frame if you also have rotationSnapThreshold at 0.
+	/// Set to 0 to always update the rotation of non-owned objects if it has changed, and to use one less FQuat4f.AngularDistance() check per frame if you also have rotationSnapThreshold at 0.
 	/// If greater than 0, a synced object's rotation is only updated if it is off from the target rotation by more than the threshold.
 	///
 	/// Usually keep this at 0 or really low, at higher numbers it's useful if you are extrapolating into the future and want to stop instantly and 
@@ -233,7 +241,7 @@ public:
 
 	/// <summary>If a synced object's rotation is more than rotationSnapThreshold from the target rotation, it will jump to the target rotation immediately instead of lerping.</summary>
 	/// <remarks>
-	/// Set to zero to not use at all and use one less FQuat.AnglularDistance() check per frame if you also have receivedRotationThreshold at 0.
+	/// Set to zero to not use at all and use one less FQuat4f.AnglularDistance() check per frame if you also have receivedRotationThreshold at 0.
 	///
 	/// Measured in degrees.
 	/// </remarks>
@@ -312,6 +320,7 @@ public:
 	/// <summary>Velocity sync mode</summary>
 	/// <remarks>
 	/// Fine tune how velocity is synced.
+	/// Syncs Primitive (if simulating physics), Movement, or CharacterMovement Components as well as allows for more accurate extrapolation.
 	/// </remarks>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SyncModes)
 		SyncMode syncVelocity = SyncMode::XYZ;
@@ -379,6 +388,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Important)
 		bool alwaysSendOrigin = false;
 
+	/// <summary>Sync changes in owernship.</summary>
+	/// <remarks>
+	/// Sends an extra byte with each network state that allows clients to handle ownership changes
+	/// </remarks>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Important)
+		bool syncOwnershipChange = false;
+
 	/// <summary>Non-owners keep a list of recent States received over the network for interpolating.</summary>
 	/// <remarks>Index 0 is the newest received State.</remarks>
 	SmoothState **stateBuffer;
@@ -393,10 +409,20 @@ public:
 	int stateCount = 0;
 
 	/// <summary>
-	/// Used via stopLerping() to 'teleport' a synced object without unwanted lerping.
-	/// Useful for player spawning and whatnot.
+	/// Used via stopEasing() to 'teleport' a synced object without unwanted easing.
+	/// Useful for player spawning and whatnot. Also used for snapping.
 	/// </summary>
-	bool dontLerp = false;
+	bool dontEasePosition = false;
+	/// <summary>
+	/// Used via stopEasing() to 'teleport' a synced object without unwanted easing.
+	/// Useful for player spawning and whatnot. Also used for snapping.
+	/// </summary>
+	bool dontEaseScale = false;
+	/// <summary>
+	/// Used via stopEasing() to 'teleport' a synced object without unwanted easing.
+	/// Useful for player spawning and whatnot. Also used for snapping.
+	/// </summary>
+	bool dontEaseRotation = false;
 
 	/// <summary>Last time the object was teleported.</summary>
 	float lastTeleportOwnerTime = 0;
@@ -405,19 +431,19 @@ public:
 	float lastTimeStateWasSent = 0;
 
 	/// <summary>Position owner was at when the last position SmoothState was sent.</summary>
-	FVector lastPositionWhenStateWasSent = FVector::ZeroVector;
+	FVector3f lastPositionWhenStateWasSent = FVector3f::ZeroVector;
 
 	/// <summary>Rotation owner was at when the last rotation SmoothState was sent.</summary>
-	FQuat lastRotationWhenStateWasSent = FQuat::Identity;
+	FQuat4f lastRotationWhenStateWasSent = FQuat4f::Identity;
 
 	/// <summary>Scale owner was at when the last scale SmoothState was sent.</summary>
-	FVector lastScaleWhenStateWasSent = FVector::OneVector;
+	FVector3f lastScaleWhenStateWasSent = FVector3f::OneVector;
 
 	/// <summary>Velocity owner was at when the last velocity SmoothState was sent.</summary>
-	FVector lastVelocityWhenStateWasSent = FVector::ZeroVector;
+	FVector3f lastVelocityWhenStateWasSent = FVector3f::ZeroVector;
 
 	/// <summary>Angular velocity owner was at when the last angular velociy SmoothState was sent.</summary>
-	FVector lastAngularVelocityWhenStateWasSent = FVector::ZeroVector;
+	FVector3f lastAngularVelocityWhenStateWasSent = FVector3f::ZeroVector;
 
 	/// <summary>Gets assigned to the real object to sync.</summary>
 	AActor *realObjectToSync;
@@ -460,8 +486,18 @@ public:
 	bool sendAngularVelocity = true;
 	/// <summary>Variable we set at the beginning of Update so we only need to do the checks once a frame.</summary>
 	bool sendMovementMode = true;
+	/// <summary>Normally movement mode is only sent when it changes, but networking in unrealiable, so you may get better results sending it all the time.</summary>
+	bool alwaysSendMovementMode = false;
 	/// <summary>Used to turn Smooth Sync off and on.</summary>
 	bool isBeingUsed = true;
+
+	/// <summary>
+	/// The time that the non-owner uses to playback the Transform of the owner. This is sent from the owner to non-owners.
+	/// This is exposed so you can line up things like animations with the exact positioning. You could send over what animation you want in your own RPC along with 
+	/// UGameplayStatics::GetRealTimeSeconds(smoothSyncScript->GetOwner()->GetWorld()) and then have the animation happen when this variable has reached that time on the non-owners.
+	/// </summary>
+	UPROPERTY(BlueprintReadOnly, Category = Important)
+	float interpolationTime = 0;
 
 	/// <summary>
 	/// The last owner time received over the network
@@ -487,10 +523,10 @@ public:
 	SmoothState *latestEndStateUsed;
 
 	/// <summary> Used to check if we should be sending a "JustStartedMoving" State. If we are teleporting, don't send one. </summary>
-	FVector latestTeleportedFromPosition;
+	FVector3f latestTeleportedFromPosition;
 
 	/// <summary> Used to check if we should be sending a "JustStartedMoving" State. If we are teleporting, don't send one. </summary>
-	FQuat latestTeleportedFromRotation;
+	FQuat4f latestTeleportedFromRotation;
 
 	/// <summary>
 	/// Reference to the Primitive Component.
@@ -498,9 +534,8 @@ public:
 	UPrimitiveComponent *primitiveComponent;
 
 	uint8 latestSentMovementMode = 0;
-	uint8 latestReceivedMovementMode = 0;
 
-	TMap<USmoothSync*, bool> wasRelevant;
+	TMap<AActor*, bool> wasRelevant;
 	float approximateNetworkTimeOnOwner = 0;
 	int receivedStatesCounter = 0;
 	float updatedDeltaTime = 0;
@@ -527,11 +562,13 @@ public:
 	bool sendAtPositionalRestMessage = false;
 	/// <summary>Gets set to true when rotation is the same for two frames in order to tell non-owners to stop extrapolating rotation.</summary>
 	bool sendAtRotationalRestMessage = false;
-	FVector positionLastFrame = FVector::ZeroVector;
+	FVector3f positionLastFrame = FVector3f::ZeroVector;
 	FIntVector originLastFrame = FIntVector::ZeroValue;
-	FQuat rotationLastFrame = FQuat::Identity;
-	FVector latestReceivedVelocity;
-	FVector latestReceivedAngularVelocity;
+	FQuat4f rotationLastFrame = FQuat4f::Identity;
+	FVector3f linearVelocityLastFrame = FVector3f::ZeroVector;
+	FVector3f angularVelocityLastFrame = FVector3f::ZeroVector;
+	FVector3f latestReceivedVelocity;
+	FVector3f latestReceivedAngularVelocity;
 
 	/// <summary>Actor will come to positional rest if it stops moving by this amount. Used to smooth out stops and starts.</summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thresholds)
@@ -540,6 +577,9 @@ public:
 	/// <summary>Actor will come to rotational rest if it stops rotating by this amount. Used to smooth out stops and starts.</summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Thresholds)
 		float atRestRotationThreshold = .1f;
+
+	/// <summary> Used to know when the owner has changed. Not an identifier. Only sent from Server. </summary>
+	uint8 ownerChangeIndicator = 1;
 
 #ifdef TimeSync
 	UTimeSyncGameStateComponentBase* timeSync = nullptr;
@@ -582,30 +622,36 @@ public:
 	/// </summary>
 	const unsigned char originRebaseMask = 1;       // 0000_0001
 
+	bool ShouldCleanUp = false;
+	bool IsTicking = false;
+
 private:
 
 public:
 	/// Sets default values for this component's properties
 	USmoothSync();
 
+	void CleanUp();
+
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	void checkIfOwnerHasChanged(SmoothState* newState);
 	void applyInterpolationOrExtrapolation();
-	void setPosition(FVector position);
-	void setRotation(const FQuat &rotation);
-	void setScale(FVector scale);
-	void setLinearVelocity(FVector position);
-	void setAngularVelocity(FVector position);
-	void interpolate(float interpolationTime, SmoothState *targetState);
-	bool extrapolate(float interpolationTime, SmoothState *targetState, bool& shouldSetPosition);
+	void interpolate(float interpolationTimeLocal, SmoothState *targetState);
+	bool extrapolate(float interpolationTimeLocal, SmoothState *targetState, bool& shouldSetPosition);
 	void addState(SmoothState *state);
 	void addTeleportState(SmoothState *state);
-	FVector getPosition();
-	FQuat getRotation();
-	FVector getScale();
-	FVector getLinearVelocity();
-	FVector getAngularVelocity();
+	void setPosition(FVector3f position, bool teleport);
+	void setRotation(const FQuat4f& rotation, bool teleport);
+	void setScale(FVector3f scale);
+	void setLinearVelocity(FVector3f position);
+	void setAngularVelocity(FVector3f position);
+	FVector3f getPosition();
+	FQuat4f getRotation();
+	FVector3f getScale();
+	FVector3f getLinearVelocity();
+	FVector3f getAngularVelocity();
 	float GetNetworkSendInterval();
 	bool shouldSendTransform();
 	bool shouldSendPosition();
@@ -634,7 +680,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SmoothSync")
 		void clearBuffer();
 
-	void stopLerping();
+	void stopEasing();
 
 	/// Teleport the player so that position will not be interpolated on non-owners. Use teleport() on the owner and 
 	/// the Actor will jump to the current owner's position on non-owners. 
@@ -659,7 +705,7 @@ public:
 	void internalEnableSmoothSync(bool enable);
 	void resetFlags();
 	void sendState(SmoothState* stateToSend = nullptr);
-	bool sameVector(FVector one, FVector two, float threshold);
+	bool sameVector(FVector3f one, FVector3f two, float threshold);
 
 	UFUNCTION(NetMulticast, unreliable, WithValidation)
 		void ServerSendsTransformToEveryone(const TArray<uint8>&  value);
@@ -671,9 +717,9 @@ public:
 	UFUNCTION(Server, unreliable, WithValidation)
 		void SmoothSyncEnableClientToServer(bool enable);
 	UFUNCTION(NetMulticast, reliable, WithValidation)
-		void SmoothSyncTeleportServerToClients(FVector position, FVector rotation, FVector scale, float tempOwnerTime);
+		void SmoothSyncTeleportServerToClients(FVector3f position, FVector3f rotation, FVector3f scale, float tempOwnerTime);
 	UFUNCTION(Server, reliable, WithValidation)
-		void SmoothSyncTeleportClientToServer(FVector position, FVector rotation, FVector scale, float tempOwnerTime);
+		void SmoothSyncTeleportClientToServer(FVector3f position, FVector3f rotation, FVector3f scale, float tempOwnerTime);
 
 
 	template <class T>
@@ -692,7 +738,10 @@ public:
 	bool deserializePositionalRestFlag(char syncInformation);
 	bool deserializeRotationalRestFlag(char syncInformation);
 
-	void shouldTeleport(SmoothState *start, SmoothState *end, float interpolationTime, float *t);
+	void ResetAtRestState();
+	AController* GetOwningController();
+
+	void shouldTeleport(SmoothState *start, SmoothState *end, float interpolationTimeLocal, float *t);
 	
 	/// <summary>
 	/// Adjust estimated owner time based on average difference between local and owner time

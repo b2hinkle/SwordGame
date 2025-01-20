@@ -37,7 +37,7 @@ void ARotatableMap::Tick(float DeltaTime)
 		{
 			//if (UKismetMathLibrary::Abs(rotationProgress) < UKismetMathLibrary::Abs(FQuat(1, 0, 0, 0).X)/*UKismetMathLibrary::Abs(degsToStopRotation)*/)
 			//{
-				Rotate(AxisOfRotation, speed, DeltaTime);
+				Rotate(AxisOfRotation, Speed, DeltaTime);
 			//}
 			//else
 			//{
@@ -49,7 +49,7 @@ void ARotatableMap::Tick(float DeltaTime)
 		{
 			//if (UKismetMathLibrary::Abs(rotationProgress) < UKismetMathLibrary::Abs(degsToStopRotation))
 			//{
-				Rotate(AxisOfRotation, speed, DeltaTime);
+				Rotate(AxisOfRotation, Speed, DeltaTime);
 			//}
 			//else
 			//{
@@ -60,7 +60,7 @@ void ARotatableMap::Tick(float DeltaTime)
 		{
 			//if (UKismetMathLibrary::Abs(rotationProgress) < UKismetMathLibrary::Abs(degsToStopRotation))
 			//{
-				Rotate(AxisOfRotation, speed, DeltaTime);
+				Rotate(AxisOfRotation, Speed, DeltaTime);
 			//}
 			//else
 			//{
@@ -116,7 +116,7 @@ void ARotatableMap::Rotate(FVector AxisOR, float speed, float deltaTime)
 void ARotatableMap::PerformRotationByAmount(FVector AxisOR, float speed, float degs)
 {
 	initialPos = GetActorLocation();
-	this->speed = speed;
+	this->Speed = speed;
 	this->AxisOfRotation = AxisOR;
 	if (AxisOR == FVector(1.f, 0.f, 0.f))
 	{
@@ -139,14 +139,14 @@ void ARotatableMap::PerformRotationByAmount(FVector AxisOR, float speed, float d
 	bShouldRotate = true;
 }
 
-void ARotatableMap::OnLevelBlueprintInjectCentroid(FVector Centroid, FVector AxisOfRotation)
+void ARotatableMap::OnLevelBlueprintInjectCentroid(FVector centroid, FVector axisOfRotation)
 {
-	this->Centroid = Centroid;
-	this->AxisOfRotation = AxisOfRotation;
+	this->Centroid = centroid;
+	this->AxisOfRotation = axisOfRotation;
 	this->AxisOfRotation.Normalize();
-	distanceFromCentroid = (GetActorLocation() - Centroid).Size();
+	distanceFromCentroid = (GetActorLocation() - centroid).Size();
 
-	lookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Centroid);
+	lookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), centroid);
 	Radius = (distanceFromCentroid * lookAtRotation.Vector()) * FVector(-1.f, -1.f, -1.f);
 }
 

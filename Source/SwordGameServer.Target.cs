@@ -1,14 +1,14 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
-using System.Collections.Generic;
 
 [SupportedPlatforms(UnrealPlatformClass.Server)]
-public class SwordGameServerTarget : TargetRules   // Change this line as shown previously
+public class SwordGameServerTarget : TargetRules
 {
-    public SwordGameServerTarget(TargetInfo Target) : base(Target)  // Change this line as shown previously
+    public SwordGameServerTarget(TargetInfo Target) : base(Target)
     {
         Type = TargetType.Server;
-        ExtraModuleNames.Add("SwordGame");    // Change this line as shown previously
+        DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
     }
 }

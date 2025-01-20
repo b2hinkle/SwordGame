@@ -2,8 +2,8 @@
 
 #include "SwordGameCharacter.h"
 
-#include "UnrealNetwork.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
+#include "Net/UnrealNetwork.h"
+//#include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -94,7 +94,7 @@ void ASwordGameCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 void ASwordGameCharacter::OnResetVR()
 {
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+	//UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
 void ASwordGameCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)

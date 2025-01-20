@@ -2,8 +2,7 @@
 
 #pragma once
 
-
-class USmoothSync;
+#include "SmoothSync.h"
 
 class SMOOTHSYNCPLUGIN_API SmoothState
 {
@@ -15,23 +14,23 @@ public:
 	/// <summary>
 	/// The position of the owned object when the state was sent.
 	/// </summary>
-	FVector position = FVector::ZeroVector;
+	FVector3f position = FVector3f::ZeroVector;
 	/// <summary>
 	/// The rotation of the owned object when the state was sent.
 	/// </summary>
-	FQuat rotation = FQuat::Identity;
+	FQuat4f rotation = FQuat4f::Identity;
 	/// <summary>
 	/// The scale of the owned object when the state was sent.
 	/// </summary>
-	FVector scale = FVector::OneVector;
+	FVector3f scale = FVector3f::OneVector;
 	/// <summary>
 	/// The velocity of the owned object when the state was sent.
 	/// </summary>
-	FVector velocity = FVector::ZeroVector;
+	FVector3f velocity = FVector3f::ZeroVector;
 	/// <summary>
 	/// The angularVelocity of the owned object when the state was sent.
 	/// </summary>
-	FVector angularVelocity = FVector::ZeroVector;
+	FVector3f angularVelocity = FVector3f::ZeroVector;
 	/// <summary>
 	/// The origin that position is relative to.
 	/// </summary>
@@ -42,6 +41,7 @@ public:
 	bool teleport = false;
 	bool atPositionalRest = false;
 	bool atRotationalRest = false;
+	bool wasMovementModeReceived = false;
 
 	SmoothState();
 	~SmoothState();
@@ -55,5 +55,5 @@ public:
 	void copyFromSmoothSync(USmoothSync *smoothSyncScript);
 	void copyFromState(SmoothState *state);
 
-	FVector rebasedPosition(FIntVector localWorldOrigin);
+	FVector3f rebasedPosition(FIntVector localWorldOrigin);
 };

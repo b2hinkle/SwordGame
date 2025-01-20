@@ -56,7 +56,7 @@ public:
 		rotAxisZ
 	};
 	RotAxis rotAxis = rotAxisX;
-	float speed;
+	float Speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AngleAxis;
