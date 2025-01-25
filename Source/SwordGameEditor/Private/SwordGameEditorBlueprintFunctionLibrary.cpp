@@ -2,14 +2,17 @@
 
 #include "SwordGameEditorBlueprintFunctionLibrary.h"
 
-UWorld* USwordGameEditorBlueprintFunctionLibrary::GetWorldFromActor(const AActor* inActor)
+#include "Components/LightComponentBase.h"
+
+UWorld* USwordGameEditorBlueprintFunctionLibrary::GetWorld(
+    const UObject* inWorldContextObject)
 {
-    if (!inActor)
+    if (!inWorldContextObject)
     {
         return nullptr;
     }
 
-    return inActor->GetWorld();
+    return inWorldContextObject->GetWorld();
 }
 
 UWorld* USwordGameEditorBlueprintFunctionLibrary::ResolveWorld(
@@ -38,4 +41,16 @@ UObject* USwordGameEditorBlueprintFunctionLibrary::ResolveObject(
         FSoftObjectPath(inPackageName, inAssetName, MoveTemp(inSubPathString)).ResolveObject();
 
     return resolvedObject;
+}
+
+void USwordGameEditorBlueprintFunctionLibrary::SetLightComponentIntensityDirect(
+    ULightComponentBase* inLightComponent,
+    const float inValue)
+{
+    if (!inLightComponent)
+    {
+        return;
+    }
+
+    inLightComponent->Intensity = inValue;
 }
