@@ -116,3 +116,68 @@ void ASwordGamePlayerController::ForceReconnectAllPlayers() const
 {
     HandleForceReconnectAllPlayers();
 }
+
+void ASwordGamePlayerController::ToggleModTools() const
+{
+    HandleToggleModTools();
+}
+
+void ASwordGamePlayerController::EnableFriendlyFireForRandomPlayer() const
+{
+    HandleEnableFriendlyFireForRandomPlayer();
+}
+
+void ASwordGamePlayerController::Ballz(const int howMany) const
+{
+    HandleBallz(howMany);
+}
+
+void ASwordGamePlayerController::ClearObjects() const
+{
+    HandleClearObjects();
+}
+
+void ASwordGamePlayerController::LaunchSelf(const float force) const
+{
+    HandleLaunchSelf(force);
+}
+
+void ASwordGamePlayerController::ToggleSwitchViewTargetOnFriendlyFire() const
+{
+    HandleToggleSwitchViewTargetOnFriendlyFire();
+}
+
+void ASwordGamePlayerController::MrIncredi1() const
+{
+    HandleMrIncredi1();
+}
+
+void ASwordGamePlayerController::MrIncredi2() const
+{
+    HandleMrIncredi2();
+}
+
+void ASwordGamePlayerController::MrIncredi3() const
+{
+    HandleMrIncredi3();
+}
+
+void ASwordGamePlayerController::SetPawnRelative3DScale(const float valueX, const float valueY, const float valueZ) const
+{
+    HandleSetPawnRelative3DScale(valueX, valueY, valueZ);
+}
+
+void ASwordGamePlayerController::GiveChargeAbility() const
+{
+    HandleGiveChargeAbility();
+}
+
+void ASwordGamePlayerController::GiveMineAbility() const
+{
+    HandleGiveMineAbility();
+}
+
+void ASwordGamePlayerController::GiveTeleportAbility() const
+{
+    HandleGiveTeleportAbility();
+}
