@@ -4,19 +4,41 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+
 #include "SwordGamePlayerController.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class SWORDGAME_API ASwordGamePlayerController : public APlayerController
 {
-	GENERATED_BODY()
-	
-public:
-	UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
-		static const FString GetNetworkURL(UObject* WorldContextObject);
+    GENERATED_BODY()
 
-		virtual void AcknowledgePossession(class APawn* P);
+protected:
+
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleRestartWorld() const;
+
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleTravelToWorld(const FString& mapName) const;
+
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleForceReconnectAllPlayers() const;
+
+public:
+
+    UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+    static FString GetNetworkURL(const UObject* worldContextObject);
+
+public:
+
+    UFUNCTION(Exec)
+    void RestartWorld() const;
+
+    UFUNCTION(Exec)
+    void TravelToWorld(const FString& mapName) const;
+
+    UFUNCTION(Exec)
+    void ForceReconnectAllPlayers() const;
 };

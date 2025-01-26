@@ -1,26 +1,34 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "SwordGamePlayerController.h"
 
-#include "Kismet/KismetSystemLibrary.h"
-
-const FString ASwordGamePlayerController::GetNetworkURL(UObject* WorldContextObject)
+FString ASwordGamePlayerController::GetNetworkURL(const UObject* worldContextObject)
 {
-	if (WorldContextObject)
-	{
-		if (UWorld* World = WorldContextObject->GetWorld())
-		{
-			return World->GetAddressURL();
-		}
-	}
+    if (!worldContextObject)
+    {
+        return FString();
+    }
 
-	return FString();
+    const UWorld* world = worldContextObject->GetWorld();
+    if (!world)
+    {
+        return FString();
+    }
+
+    return world->GetAddressURL();
 }
 
-void ASwordGamePlayerController::AcknowledgePossession(APawn* P)
+void ASwordGamePlayerController::RestartWorld() const
 {
-	Super::AcknowledgePossession(P);
-
+    HandleRestartWorld();
 }
 
+void ASwordGamePlayerController::TravelToWorld(const FString& mapName) const
+{
+    HandleTravelToWorld(mapName);
+}
+
+void ASwordGamePlayerController::ForceReconnectAllPlayers() const
+{
+    HandleForceReconnectAllPlayers();
+}
