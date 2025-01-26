@@ -28,8 +28,10 @@ protected:
 
 public:
 
-    UFUNCTION(BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+    UFUNCTION(BlueprintPure, meta = (WorldContext = worldContextObject))
     static FString GetNetworkURL(const UObject* worldContextObject);
+
+    static TArray<FString> GetAllAutoCompleteMapNames();
 
 public:
 
