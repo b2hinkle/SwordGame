@@ -21,7 +21,9 @@ Open project launcher from the editor and start a build.
     - Package.
         - Choose "Package & store locally".
         - Enable "Include an installer for prerequisites of packaged games".
+    - Archive.
+        - Enable archiving.
+        - Choose a directory to output a copy of the build to. This directory will be your clean build that you can zip and distribute.
     - Deploy.
         - Choose "Do not deploy".
 3. Launch the profile.
-4. When finished, immediately zip the resulting "Saved/StagedBuilds" directory for distribution.
