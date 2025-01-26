@@ -7,6 +7,8 @@
 
 #include "SwordGameEditorBlueprintFunctionLibrary.generated.h"
 
+class ULightComponentBase;
+
 /**
  *
  */
@@ -18,7 +20,8 @@ class SWORDGAMEEDITOR_API USwordGameEditorBlueprintFunctionLibrary : public UBlu
 public:
 
     UFUNCTION(BlueprintPure, Category = "SwordGameEditor")
-    static UWorld* GetWorldFromActor(const AActor* inActor);
+    static UWorld* GetWorld(
+        const UObject* inWorldContextObject);
 
     UFUNCTION(BlueprintPure, Category = "SwordGameEditor")
     static UWorld* ResolveWorld(
@@ -30,4 +33,9 @@ public:
         const FName& inPackageName,
         const FName& inAssetName,
         FString inSubPathString = TEXT(""));
+
+    UFUNCTION(BlueprintCallable, Category = "SwordGameEditor")
+    static void SetLightComponentIntensityDirect(
+        ULightComponentBase* inLightComponent,
+        const float inValue);
 };
