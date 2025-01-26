@@ -75,53 +75,69 @@ public:
 public:
 
     UFUNCTION(Exec)
-    void RestartWorld() const;
+    void NinjaRestart() const;
 
     UFUNCTION(Exec)
-    void TravelToWorld(const FString& mapName) const;
+    void NinjaTravel(const FString& mapName) const;
 
     UFUNCTION(Exec)
-    void ForceReconnectAllPlayers() const;
+    void NinjaForceReconnectAllPlayers() const;
 
     UFUNCTION(Exec)
-    void ToggleModTools() const;
+    void NinjaToggleModTools() const;
 
     UFUNCTION(Exec)
-    void EnableFriendlyFireForRandomPlayer() const;
+    void NinjaEnableFriendlyFireForRandomPlayer() const;
 
+    /**
+     * @note Requires mod tools enabled.
+     * @see `NinjaToggleModTools()`.
+     */
     UFUNCTION(Exec)
-    void Ballz(const int howMany) const;
+    void NinjaBallz(const int howMany) const;
 
+    /**
+     * @note Requires mod tools enabled.
+     * @see `NinjaToggleModTools()`.
+     */
     UFUNCTION(Exec)
-    void ClearObjects() const;
+    void NinjaClearObjects() const;
 
+    /**
+     * @note Requires mod tools enabled.
+     * @see `NinjaToggleModTools()`.
+     */
     UFUNCTION(Exec)
-    void LaunchSelf(const float force) const;
+    void NinjaLaunchSelf(const float force) const;
 
     /**
      * @todo Change this to a setter rather than a toggle.
      */
     UFUNCTION(Exec)
-    void ToggleSwitchViewTargetOnFriendlyFire() const;
+    void NinjaToggleSwitchViewTargetOnFriendlyFire() const;
 
     UFUNCTION(Exec)
-    void MrIncredi1() const;
+    void NinjaMrIncredi1() const;
 
     UFUNCTION(Exec)
-    void MrIncredi2() const;
+    void NinjaMrIncredi2() const;
 
     UFUNCTION(Exec)
-    void MrIncredi3() const;
+    void NinjaMrIncredi3() const;
+
+    /**
+     * @note Requires mod tools enabled.
+     * @see `NinjaToggleModTools()`.
+     */
+    UFUNCTION(Exec)
+    void NinjaSetPawnRelative3DScale(const float valueX, const float valueY, const float valueZ) const;
 
     UFUNCTION(Exec)
-    void SetPawnRelative3DScale(const float valueX, const float valueY, const float valueZ) const;
+    void NinjaGiveChargeAbility() const;
 
     UFUNCTION(Exec)
-    void GiveChargeAbility() const;
+    void NinjaGiveMineAbility() const;
 
     UFUNCTION(Exec)
-    void GiveMineAbility() const;
-
-    UFUNCTION(Exec)
-    void GiveTeleportAbility() const;
+    void NinjaGiveTeleportAbility() const;
 };

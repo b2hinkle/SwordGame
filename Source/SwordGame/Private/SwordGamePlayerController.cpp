@@ -22,7 +22,7 @@ namespace
                         autoCompleteEntries.Reserve(FMath::Max(autoCompleteEntries.Max(), newNum));
                     }
 
-                    const FName commandName = GET_FUNCTION_NAME_CHECKED_OneParam(ASwordGamePlayerController, TravelToWorld, const FString&);
+                    const FName commandName = GET_FUNCTION_NAME_CHECKED_OneParam(ASwordGamePlayerController, NinjaTravel, const FString&);
 
                     for (FString& mapName : mapNames)
                     {
@@ -102,82 +102,82 @@ TArray<FString> ASwordGamePlayerController::GetAllAutoCompleteMapNames()
     return Packages;
 }
 
-void ASwordGamePlayerController::RestartWorld() const
+void ASwordGamePlayerController::NinjaRestart() const
 {
     HandleRestartWorld();
 }
 
-void ASwordGamePlayerController::TravelToWorld(const FString& mapName) const
+void ASwordGamePlayerController::NinjaTravel(const FString& mapName) const
 {
     HandleTravelToWorld(mapName);
 }
 
-void ASwordGamePlayerController::ForceReconnectAllPlayers() const
+void ASwordGamePlayerController::NinjaForceReconnectAllPlayers() const
 {
     HandleForceReconnectAllPlayers();
 }
 
-void ASwordGamePlayerController::ToggleModTools() const
+void ASwordGamePlayerController::NinjaToggleModTools() const
 {
     HandleToggleModTools();
 }
 
-void ASwordGamePlayerController::EnableFriendlyFireForRandomPlayer() const
+void ASwordGamePlayerController::NinjaEnableFriendlyFireForRandomPlayer() const
 {
     HandleEnableFriendlyFireForRandomPlayer();
 }
 
-void ASwordGamePlayerController::Ballz(const int howMany) const
+void ASwordGamePlayerController::NinjaBallz(const int howMany) const
 {
     HandleBallz(howMany);
 }
 
-void ASwordGamePlayerController::ClearObjects() const
+void ASwordGamePlayerController::NinjaClearObjects() const
 {
     HandleClearObjects();
 }
 
-void ASwordGamePlayerController::LaunchSelf(const float force) const
+void ASwordGamePlayerController::NinjaLaunchSelf(const float force) const
 {
     HandleLaunchSelf(force);
 }
 
-void ASwordGamePlayerController::ToggleSwitchViewTargetOnFriendlyFire() const
+void ASwordGamePlayerController::NinjaToggleSwitchViewTargetOnFriendlyFire() const
 {
     HandleToggleSwitchViewTargetOnFriendlyFire();
 }
 
-void ASwordGamePlayerController::MrIncredi1() const
+void ASwordGamePlayerController::NinjaMrIncredi1() const
 {
     HandleMrIncredi1();
 }
 
-void ASwordGamePlayerController::MrIncredi2() const
+void ASwordGamePlayerController::NinjaMrIncredi2() const
 {
     HandleMrIncredi2();
 }
 
-void ASwordGamePlayerController::MrIncredi3() const
+void ASwordGamePlayerController::NinjaMrIncredi3() const
 {
     HandleMrIncredi3();
 }
 
-void ASwordGamePlayerController::SetPawnRelative3DScale(const float valueX, const float valueY, const float valueZ) const
+void ASwordGamePlayerController::NinjaSetPawnRelative3DScale(const float valueX, const float valueY, const float valueZ) const
 {
     HandleSetPawnRelative3DScale(valueX, valueY, valueZ);
 }
 
-void ASwordGamePlayerController::GiveChargeAbility() const
+void ASwordGamePlayerController::NinjaGiveChargeAbility() const
 {
     HandleGiveChargeAbility();
 }
 
-void ASwordGamePlayerController::GiveMineAbility() const
+void ASwordGamePlayerController::NinjaGiveMineAbility() const
 {
     HandleGiveMineAbility();
 }
 
-void ASwordGamePlayerController::GiveTeleportAbility() const
+void ASwordGamePlayerController::NinjaGiveTeleportAbility() const
 {
     HandleGiveTeleportAbility();
 }
