@@ -6,7 +6,11 @@
 
 You must have a source build of the engine. This is for building the server target.
 
-First, for each map under "Content/Maps", except for "Content/Maps/LightingScenarios", open them in the editor and "build all levels".
+First, build each map under "Content/Maps", except for "Content/Maps/LightingScenarios".
+- One way to do this is open each one in the editor and "build all levels".
+- Alternatively, here's a command to do that: "<editor-exe-path> <uproject-path> -noP4 -AllowCommandletRendering -run=ResavePackages -buildlighting -buildreflectioncaptures -buildtexturestreaming -MAP=UltimateBuildDonut+Door+DoubleHouse+DT+Elevape+EnemyHouse+House+House3+House_2+House_2Big+House_2BigBig+Level1+SSB+Town+TransitionMap+UltimateBuild+Overview+ThirdPersonExampleMap+Modular_interiorsBONUS_demo+Advanced_Lighting+Minimal_Default+StarterMap"
+    - This command worked for me except for the Elevape map. I think that might be because I included the lighting scenario levels. Now I removed them from the command but I haven't tried it myself to verify if it works now.
+    - Also, this command builds ALL maps - not only the ones under "Content/Maps". This should be corrected.
 
 Open project launcher from the editor and start a build.
 1. Create new custom launch profile.
