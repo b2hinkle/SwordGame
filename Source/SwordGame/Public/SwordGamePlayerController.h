@@ -75,6 +75,9 @@ public:
 public:
 
     UFUNCTION(Exec)
+    void NinjaJoin(const FString& address) const;
+
+    UFUNCTION(Exec)
     void NinjaRestart() const;
 
     UFUNCTION(Exec)

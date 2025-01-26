@@ -102,6 +102,16 @@ TArray<FString> ASwordGamePlayerController::GetAllAutoCompleteMapNames()
     return Packages;
 }
 
+void ASwordGamePlayerController::NinjaJoin(const FString& address) const
+{
+    FStringBuilderBase&& command = WriteToString<64>(TEXT("open "), address);
+
+    ThisClass& thisMutable = const_cast<ThisClass&>(*this);
+
+    constexpr bool shouldWriteToLog = true;
+    thisMutable.ConsoleCommand(FString(MoveTemp(command)), shouldWriteToLog);
+}
+
 void ASwordGamePlayerController::NinjaRestart() const
 {
     HandleRestartWorld();
