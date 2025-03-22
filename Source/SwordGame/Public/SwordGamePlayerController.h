@@ -21,7 +21,7 @@ protected:
     void HandleRestartWorld() const;
 
     UFUNCTION(BlueprintImplementableEvent)
-    void HandleTravelToWorld(const FString& mapName) const;
+    void HandleTravelToWorld(const FName& mapName) const;
 
     UFUNCTION(BlueprintImplementableEvent)
     void HandleForceReconnectAllPlayers() const;
@@ -75,13 +75,13 @@ public:
 public:
 
     UFUNCTION(Exec)
-    void NinjaJoin(const FString& address) const;
+    void NinjaJoin(const FName& address) const;
 
     UFUNCTION(Exec)
     void NinjaRestart() const;
 
     UFUNCTION(Exec)
-    void NinjaTravel(const FString& mapName) const;
+    void NinjaTravel(const FName& mapName) const;
 
     UFUNCTION(Exec)
     void NinjaForceReconnectAllPlayers() const;
