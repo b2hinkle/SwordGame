@@ -22,7 +22,7 @@ namespace
                         autoCompleteEntries.Reserve(FMath::Max(autoCompleteEntries.Max(), newNum));
                     }
 
-                    const FName commandName = GET_FUNCTION_NAME_CHECKED_OneParam(ASwordGamePlayerController, NinjaTravel, const FString&);
+                    const FName commandName = GET_FUNCTION_NAME_CHECKED_OneParam(ASwordGamePlayerController, NinjaTravel, const FName&);
 
                     for (FString& mapName : mapNames)
                     {
@@ -102,7 +102,7 @@ TArray<FString> ASwordGamePlayerController::GetAllAutoCompleteMapNames()
     return Packages;
 }
 
-void ASwordGamePlayerController::NinjaJoin(const FString& address) const
+void ASwordGamePlayerController::NinjaJoin(const FName& address) const
 {
     FStringBuilderBase&& command = WriteToString<64>(TEXT("open "), address);
 
@@ -117,7 +117,7 @@ void ASwordGamePlayerController::NinjaRestart() const
     HandleRestartWorld();
 }
 
-void ASwordGamePlayerController::NinjaTravel(const FString& mapName) const
+void ASwordGamePlayerController::NinjaTravel(const FName& mapName) const
 {
     HandleTravelToWorld(mapName);
 }
