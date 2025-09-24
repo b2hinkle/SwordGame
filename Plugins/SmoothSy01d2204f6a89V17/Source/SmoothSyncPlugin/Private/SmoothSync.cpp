@@ -507,7 +507,7 @@ void USmoothSync::ServerSendsTransformToEveryone_Implementation(const TArray<uin
 	}
 	else
 	{
-		if (stateCount > 0)
+		if (stateCount > 0 && stateBuffer[0] != nullptr)
 		{
 			stateToAdd->position = stateBuffer[0]->position;
 		}
@@ -563,7 +563,7 @@ void USmoothSync::ServerSendsTransformToEveryone_Implementation(const TArray<uin
 	}
 	else
 	{
-		if (stateCount > 0)
+		if (stateCount > 0 && stateBuffer[0] != nullptr)
 		{
 			stateToAdd->rotation = stateBuffer[0]->rotation;
 		}
@@ -612,7 +612,7 @@ void USmoothSync::ServerSendsTransformToEveryone_Implementation(const TArray<uin
 	}
 	else
 	{
-		if (stateCount > 0)
+		if (stateCount > 0 && stateBuffer[0] != nullptr)
 		{
 			stateToAdd->scale = stateBuffer[0]->scale;
 		}
