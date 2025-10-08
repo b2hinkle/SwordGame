@@ -9,7 +9,7 @@
 
 ASwordGameGameMode::ASwordGameGameMode()
 {
-	
+	bUseSeamlessTravel = true;
 }
 
 void ASwordGameGameMode::BeginPlay()
