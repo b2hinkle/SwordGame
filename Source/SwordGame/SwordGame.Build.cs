@@ -10,6 +10,6 @@ public class SwordGame : ModuleRules
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
 
-        PrivateDependencyModuleNames.Add("EngineSettings");
+        PrivateDependencyModuleNames.AddRange(new string[] { "EngineSettings", "Slate"});
     }
 }

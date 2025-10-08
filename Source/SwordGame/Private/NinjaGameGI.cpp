@@ -3,6 +3,15 @@
 
 #include "NinjaGameGI.h"
 
+#include "PlayerMenuInputProcessor.h"
+
+
+void UNinjaGameGI::Init()
+{
+    Super::Init();
+
+    FSlateApplication::Get().RegisterInputPreProcessor(MakeShared<FPlayerMenuInputProcessor>());
+}
 
 //#include "Steamworks/Steamv139/sdk/public/steam/isteammatchmaking.h"
 
@@ -105,5 +114,3 @@
 //{
 //}
 #pragma endregion
-
-

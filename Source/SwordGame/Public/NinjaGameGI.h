@@ -17,6 +17,10 @@ class SWORDGAME_API UNinjaGameGI : public UGameInstance/*, public ISteamMatchmak
 	GENERATED_BODY()
 	
 public:
+
+	void Init() override;
+
+public:
 	//void JoinServer(uint32 IP, uint32 Port);
 
 #pragma region ISteamMatchmakingServers Pure Implentations
