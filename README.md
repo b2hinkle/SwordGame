@@ -28,8 +28,9 @@ Open project launcher from the editor and start a build.
     - Archive.
         - Enable archiving.
         - Choose a directory to output a copy of the build to. This directory will be your clean build that you can zip and distribute.
-        - Please include the commit hash in the folder name.
-        - Current convention for build names: "<game-name>-<commit-hash>". E.g., "SwordGame-1dd584dab3bdf0319328da8e6f823312abd234bb".
+        - Please include the commit date and commit hash in the folder name.
+        - Current convention for build names: `<game-name>_<commit-date-time>_<commit-hash>`.
+            - E.g., "SwordGame_2025-03-22T03-43-17_1cc177907b9f6e9ebcceaf210187cfb1eac88fd7".
     - Deploy.
         - Choose "Do not deploy".
 3. Launch the profile.
