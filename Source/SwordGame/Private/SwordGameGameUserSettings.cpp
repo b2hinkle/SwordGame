@@ -11,7 +11,8 @@ void USwordGameGameUserSettings::SetToDefaults()
 {
     Super::SetToDefaults();
 
-    SetAutoOpenURL(FString(AutoOpenURLDefaultValue));
+    SetAutoConnectURL(FString(AutoConnectURLDefaultValue));
+    SetIsAutoConnectEnabled(bIsAutoConnectEnabledDefaultValue);
 }
 
 USwordGameGameUserSettings& USwordGameGameUserSettings::GetChecked()

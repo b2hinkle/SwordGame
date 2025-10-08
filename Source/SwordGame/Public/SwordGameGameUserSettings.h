@@ -24,15 +24,27 @@ public:
 
     static USwordGameGameUserSettings& GetChecked();
 
-    FORCEINLINE const FString& GetAutoOpenURL() const
+    FORCEINLINE const FString& GetAutoConnectURL() const
     {
-        return AutoOpenURL;
+        return AutoConnectURL;
     }
 
     UFUNCTION(BlueprintCallable)
-    FORCEINLINE void SetAutoOpenURL(FString newValue)
+    FORCEINLINE void SetAutoConnectURL(FString newValue)
     {
-        AutoOpenURL = MoveTemp(newValue);
+        AutoConnectURL = MoveTemp(newValue);
+    }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE bool GetIsAutoConnectEnabled() const
+    {
+        return bIsAutoConnectEnabled;
+    }
+
+    UFUNCTION(BlueprintCallable)
+    FORCEINLINE void SetIsAutoConnectEnabled(bool newValue)
+    {
+        bIsAutoConnectEnabled = newValue;
     }
 
 private:
@@ -44,24 +56,35 @@ private:
     }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE FString BPGetAutoOpenURL() const
+    FORCEINLINE FString BPGetAutoConnectURL() const
     {
-        return AutoOpenURL;
+        return AutoConnectURL;
     }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE FString BPGetAutoOpenURLDefaultValue() const
+    FORCEINLINE FString BPGetAutoConnectURLDefaultValue() const
     {
-        return FString(AutoOpenURLDefaultValue);
+        return FString(AutoConnectURLDefaultValue);
+    }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE bool BPGetIsAutoConnectEnabledDefaultValue() const
+    {
+        return bIsAutoConnectEnabledDefaultValue;
     }
 
 public:
 
-    // @remark @Christian: [settings][version] Make sure you increment the serialized version if you ever change this default, so that existing users get this value updated instead of loading the old default value.
-    static constexpr FStringView AutoOpenURLDefaultValue = TEXTVIEW("127.0.0.1");
+    // These are the default values of our settings. @remark @Christian: [settings][version] Make sure you increment the
+    // serialized version if you ever change this default, so that existing users get this value updated instead of loading the old default value.
+    static constexpr FStringView AutoConnectURLDefaultValue = TEXTVIEW("127.0.0.1");
+    static constexpr bool bIsAutoConnectEnabledDefaultValue = true;
 
 private:
 
     UPROPERTY(Config)
-    FString AutoOpenURL;
+    FString AutoConnectURL;
+
+    UPROPERTY(Config)
+    bool bIsAutoConnectEnabled = false;
 };
