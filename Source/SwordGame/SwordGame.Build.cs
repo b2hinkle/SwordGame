@@ -13,6 +13,8 @@ public class SwordGame : ModuleRules
                 "Core",
                 "CoreUObject",
                 "Engine",
+                "InputCore",
+                "Slate",
                 "UMG"
             }
         );
