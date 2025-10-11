@@ -8,7 +8,14 @@ public class SwordGame : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+        PublicDependencyModuleNames.AddRange(
+            new string[] {
+                "Core",
+                "CoreUObject",
+                "Engine",
+                "UMG"
+            }
+        );
 
         PrivateDependencyModuleNames.AddRange(new string[] { "EngineSettings", "Slate"});
     }

@@ -47,6 +47,18 @@ public:
         bIsAutoConnectEnabled = newValue;
     }
 
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 GetAutoConnectNumTries() const
+    {
+        return AutoConnectNumTries;
+    }
+
+    UFUNCTION(BlueprintCallable)
+    FORCEINLINE void SetAutoConnectNumTries(uint8 newValue)
+    {
+        AutoConnectNumTries = newValue;
+    }
+
 private:
 
     UFUNCTION(BlueprintPure)
@@ -73,17 +85,27 @@ private:
         return bIsAutoConnectEnabledDefaultValue;
     }
 
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 BPGetAutoConnectNumTriesDefaultValue() const
+    {
+        return AutoConnectNumTries;
+    }
+
 public:
 
     // These are the default values of our settings. @remark @Christian: [settings][version] Make sure you increment the
     // serialized version if you ever change this default, so that existing users get this value updated instead of loading the old default value.
-    static constexpr FStringView AutoConnectURLDefaultValue = TEXTVIEW("127.0.0.1");
+    static constexpr FStringView AutoConnectURLDefaultValue = TEXTVIEW("mkep.nekocloud.app:7777");
+    static constexpr uint8 AutoConnectNumTriesDefaultValue = 4;
     static constexpr bool bIsAutoConnectEnabledDefaultValue = true;
 
 private:
 
     UPROPERTY(Config)
     FString AutoConnectURL;
+
+    UPROPERTY(Config)
+    uint8 AutoConnectNumTries = false;
 
     UPROPERTY(Config)
     bool bIsAutoConnectEnabled = false;
