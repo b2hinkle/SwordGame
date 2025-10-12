@@ -12,8 +12,10 @@ void USwordGameGameUserSettings::SetToDefaults()
     Super::SetToDefaults();
 
     SetAutoConnectURL(FString(AutoConnectURLDefaultValue));
-    SetIsAutoConnectEnabled(bIsAutoConnectEnabledDefaultValue);
     SetAutoConnectNumTries(AutoConnectNumTriesDefaultValue);
+    SetAutoReconnectMaxTimes(AutoReconnectMaxTimesDefaultValue);
+    SetIsAutoConnectEnabled(bIsAutoConnectEnabledDefaultValue);
+    SetIsAutoReconnectEnabled(bIsAutoReconnectEnabledDefaultValue);
 }
 
 USwordGameGameUserSettings& USwordGameGameUserSettings::GetChecked()

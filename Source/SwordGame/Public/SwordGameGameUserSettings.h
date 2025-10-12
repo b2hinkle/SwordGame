@@ -36,6 +36,30 @@ public:
     }
 
     UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 GetAutoConnectNumTries() const
+    {
+        return AutoConnectNumTries;
+    }
+
+    UFUNCTION(BlueprintCallable)
+    FORCEINLINE void SetAutoConnectNumTries(uint8 newValue)
+    {
+        AutoConnectNumTries = newValue;
+    }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 GetAutoReconnectMaxTimes() const
+    {
+        return AutoReconnectMaxTimes;
+    }
+
+    UFUNCTION(BlueprintCallable)
+    FORCEINLINE void SetAutoReconnectMaxTimes(uint8 newValue)
+    {
+        AutoReconnectMaxTimes = newValue;
+    }
+
+    UFUNCTION(BlueprintPure)
     FORCEINLINE bool GetIsAutoConnectEnabled() const
     {
         return bIsAutoConnectEnabled;
@@ -48,15 +72,15 @@ public:
     }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE uint8 GetAutoConnectNumTries() const
+    FORCEINLINE bool GetIsAutoReconnectEnabled() const
     {
-        return AutoConnectNumTries;
+        return bIsAutoReconnectEnabled;
     }
 
     UFUNCTION(BlueprintCallable)
-    FORCEINLINE void SetAutoConnectNumTries(uint8 newValue)
+    FORCEINLINE void SetIsAutoReconnectEnabled(bool newValue)
     {
-        AutoConnectNumTries = newValue;
+        bIsAutoReconnectEnabled = newValue;
     }
 
 private:
@@ -80,15 +104,27 @@ private:
     }
 
     UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 BPGetAutoConnectNumTriesDefaultValue() const
+    {
+        return AutoConnectNumTries;
+    }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE uint8 BPGetAutoReconnectMaxTimesDefaultValue() const
+    {
+        return AutoReconnectMaxTimes;
+    }
+
+    UFUNCTION(BlueprintPure)
     FORCEINLINE bool BPGetIsAutoConnectEnabledDefaultValue() const
     {
         return bIsAutoConnectEnabledDefaultValue;
     }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE uint8 BPGetAutoConnectNumTriesDefaultValue() const
+    FORCEINLINE bool BPGetIsAutoReconnectEnabledDefaultValue() const
     {
-        return AutoConnectNumTries;
+        return bIsAutoReconnectEnabledDefaultValue;
     }
 
 public:
@@ -96,8 +132,10 @@ public:
     // These are the default values of our settings. @remark @Christian: [settings][version] Make sure you increment the
     // serialized version if you ever change this default, so that existing users get this value updated instead of loading the old default value.
     static constexpr FStringView AutoConnectURLDefaultValue = TEXTVIEW("mkep.nekocloud.app:7777");
-    static constexpr uint8 AutoConnectNumTriesDefaultValue = 4;
+    static constexpr uint8 AutoConnectNumTriesDefaultValue = 4u;
+    static constexpr uint8 AutoReconnectMaxTimesDefaultValue = 8u;
     static constexpr bool bIsAutoConnectEnabledDefaultValue = true;
+    static constexpr bool bIsAutoReconnectEnabledDefaultValue = true;
 
 private:
 
@@ -105,8 +143,14 @@ private:
     FString AutoConnectURL;
 
     UPROPERTY(Config)
-    uint8 AutoConnectNumTries = false;
+    uint8 AutoConnectNumTries = 0u;
+
+    UPROPERTY(Config)
+    uint8 AutoReconnectMaxTimes = 0u;
 
     UPROPERTY(Config)
     bool bIsAutoConnectEnabled = false;
+
+    UPROPERTY(Config)
+    bool bIsAutoReconnectEnabled = false;
 };
