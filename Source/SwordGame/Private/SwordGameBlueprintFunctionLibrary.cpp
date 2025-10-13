@@ -3,6 +3,7 @@
 #include "SwordGameBlueprintFunctionLibrary.h"
 
 #include "PlayerMenuInputProcessor.h"
+#include "Components/ActorComponent.h"
 
 void USwordGameBlueprintFunctionLibrary::ExecuteOnPlayerMenuInputPress(const UObject* ctxObj, FPlayerMenuInputPressDynamicDelegate del)
 {
@@ -15,4 +16,9 @@ void USwordGameBlueprintFunctionLibrary::ExecuteOnPlayerMenuInputPress(const UOb
 void USwordGameBlueprintFunctionLibrary::OnPlayerMenuInputPress_RemoveByCtxObj(const UObject* ctxObj)
 {
     SGOnPlayerMenuInputPress.RemoveAll(ctxObj);
+}
+
+void USwordGameBlueprintFunctionLibrary::DestroyActorComponentBypassAllowAnyoneToDestroyMe(UActorComponent* component)
+{
+    component->DestroyComponent();
 }
