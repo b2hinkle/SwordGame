@@ -13,6 +13,7 @@ void USwordGameGameUserSettings::SetToDefaults()
 
     SetAutoConnectURL(FString(AutoConnectURLDefaultValue));
     SetIsAutoConnectEnabled(bIsAutoConnectEnabledDefaultValue);
+    SetAutoConnectNumTries(AutoConnectNumTriesDefaultValue);
 }
 
 USwordGameGameUserSettings& USwordGameGameUserSettings::GetChecked()
