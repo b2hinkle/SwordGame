@@ -21,6 +21,7 @@ void ASwordGameCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASwordGameCharacter, bChargeMode);
+	DOREPLIFETIME_CONDITION(ASwordGameCharacter, RemoteViewYaw16, COND_SkipOwner);
 }
 
 ASwordGameCharacter::ASwordGameCharacter()
@@ -147,4 +148,53 @@ void ASwordGameCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void ASwordGameCharacter::Tick(float deltaSeconds)
+{
+	Super::Tick(deltaSeconds);
+}
+
+void ASwordGameCharacter::PreReplication(IRepChangedPropertyTracker& changedPropertyTracker)
+{
+	Super::PreReplication(changedPropertyTracker);
+
+	AController* controller = GetController();
+	if (HasAuthority() && controller)
+	{
+		SetRemoteViewYaw(controller->GetControlRotation().Yaw);
+	}
+}
+
+FRotator ASwordGameCharacter::GetBaseAimRotation() const
+{
+	FRotator result = Super::GetBaseAimRotation();
+
+	// Use the replicated rotation values if we are non-server, non-locally-controlled pawns.
+	if (GetLocalRole() <= ENetRole::ROLE_SimulatedProxy)
+	{
+		result.Pitch = FRotator::DecompressAxisFromShort(GetRemoteViewPitch());
+		result.Yaw = FRotator::DecompressAxisFromShort(GetRemoteViewYaw());
+	}
+
+	return result;
+}
+
+FRotator ASwordGameCharacter::GetViewRotation() const
+{
+	FRotator result = Super::GetViewRotation();
+
+	// Use the replicated rotation values if we are non-server, non-locally-controlled pawns.
+	if (GetLocalRole() <= ENetRole::ROLE_SimulatedProxy)
+	{
+		result.Pitch = FRotator::DecompressAxisFromShort(GetRemoteViewPitch());
+		result.Yaw = FRotator::DecompressAxisFromShort(GetRemoteViewYaw());
+	}
+
+	return result;
+}
+
+void ASwordGameCharacter::SetRemoteViewYaw(float newValue)
+{
+	RemoteViewYaw16 = FRotator::CompressAxisToShort(newValue);
 }

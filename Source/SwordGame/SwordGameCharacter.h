@@ -75,5 +75,31 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-};
 
+public:
+
+	// UObject overrides.
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	// UObject overrides.
+
+	// AActor overrides.
+	virtual void Tick(float deltaSeconds) override;
+	virtual void PreReplication(IRepChangedPropertyTracker& changedPropertyTracker) override;
+	// AActor overrides.
+
+	// APawn overrides.
+	virtual FRotator GetBaseAimRotation() const override;
+	virtual FRotator GetViewRotation() const override;
+	// APawn overrides.
+
+	FORCEINLINE uint16 GetRemoteViewYaw() const { return RemoteViewYaw16; }
+	void SetRemoteViewYaw(float newValue);
+
+private:
+
+	/**
+	 * @brief The yaw version of `APawn::RemoteViewPitch16`.
+	 */
+	UPROPERTY(Replicated)
+	uint16 RemoteViewYaw16 = 0u;
+};
