@@ -165,4 +165,15 @@ public:
 
     UFUNCTION(Exec)
     void NinjaEnableInvisibilityForTheInnocent() const;
+
+    /**
+     * Execute a console command on the server.
+     */
+    UFUNCTION(Exec)
+    void NinjaServerExec(const FString& commandToExecuteOnTheServer);
+
+public:
+
+    UFUNCTION(Server, Reliable)
+    void ServerNinjaExec(const FString& command);
 };
