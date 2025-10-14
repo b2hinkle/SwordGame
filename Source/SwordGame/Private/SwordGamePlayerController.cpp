@@ -43,6 +43,19 @@ ASwordGamePlayerController::ASwordGamePlayerController(const FObjectInitializer&
 {
 }
 
+void ASwordGamePlayerController::EndPlayingState()
+{
+    Super::EndPlayingState();
+
+    if (APawn* pawn = GetPawn())
+    {
+        if (ASwordGameCharacter* swordGameCharacter = Cast<ASwordGameCharacter>(pawn))
+        {
+            swordGameCharacter->SetRemoteViewYaw(0.f);
+        }
+    }
+}
+
 FString ASwordGamePlayerController::GetNetworkURL(const UObject* worldContextObject)
 {
     if (!worldContextObject)
@@ -203,15 +216,13 @@ void ASwordGamePlayerController::NinjaDisableInvisibilityForTheInnocent() const
     HandleDisableInvisibilityForTheInnocent();
 }
 
-void ASwordGamePlayerController::EndPlayingState()
+void ASwordGamePlayerController::NinjaServerExec(const FString& commandToExecuteOnTheServer)
 {
-    Super::EndPlayingState();
+    ServerNinjaExec(commandToExecuteOnTheServer);
+}
 
-    if (APawn* pawn = GetPawn())
-    {
-        if (ASwordGameCharacter* swordGameCharacter = Cast<ASwordGameCharacter>(pawn))
-        {
-            swordGameCharacter->SetRemoteViewYaw(0.f);
-        }
-    }
+void ASwordGamePlayerController::ServerNinjaExec_Implementation(const FString& command)
+{
+    constexpr bool shouldWriteToLog = true;
+    ConsoleCommand(command, shouldWriteToLog);
 }
