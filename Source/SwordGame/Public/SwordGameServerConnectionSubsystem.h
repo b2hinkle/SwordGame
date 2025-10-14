@@ -45,11 +45,21 @@ public:
         return MoveTemp(*this);
     }
 
-    static FText GetDefaultConnectionToServerStatusText();
+    FORCEINLINE FConnectionSequenceArgs&& SetFailedToConnectFormattedStatusText(FText&& newValue) &&
+    {
+        FailedToConnectFormattedStatusText = MoveTemp(newValue);
+        return MoveTemp(*this);
+    }
+
+    static FText GetDefaultConnectingToServerStatusText();
+
+    static FText GetDefaultFailedToConnectFormattedStatusText();
 
 public:
 
-    FText ConnectingToServerStatusText = GetDefaultConnectionToServerStatusText();
+    FText ConnectingToServerStatusText = GetDefaultConnectingToServerStatusText();
+
+    FText FailedToConnectFormattedStatusText = GetDefaultFailedToConnectFormattedStatusText();
 
     FString URL;
 
@@ -206,6 +216,8 @@ private:
     TSoftObjectPtr<UUserWidget> ServerConnectionUserWidgetClassSoft;
 
     FText CurrentConnectionSequenceConnectingToServerStatusText;
+
+    FText CurrentConnectionSequenceFailedToConnectFormattedStatusText;
 
     FString CurrentConnectionSequenceURL;
 

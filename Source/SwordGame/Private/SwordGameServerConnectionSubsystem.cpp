@@ -93,9 +93,14 @@ namespace
 
 #define LOCTEXT_NAMESPACE "SwordGameServerConnectionSubsystem"
 
-FText FConnectionSequenceArgs::GetDefaultConnectionToServerStatusText()
+FText FConnectionSequenceArgs::GetDefaultConnectingToServerStatusText()
 {
-    return LOCTEXT("ServerConnectionWidget_Status_GetDefaultConnectionToServerStatusText", "Connecting to server...");
+    return LOCTEXT("ServerConnectionWidget_Status_GetDefaultConnectingToServerStatusText", "Connecting to server...");
+}
+
+FText FConnectionSequenceArgs::GetDefaultFailedToConnectFormattedStatusText()
+{
+    return LOCTEXT("ServerConnectionWidget_Status_GetDefaultFailedToConnectFormattedStatusText", "Failed to connect after {0} attempts");
 }
 
 void USwordGameServerConnectionSubsystem::Initialize(FSubsystemCollectionBase& collection)
@@ -227,6 +232,7 @@ void USwordGameServerConnectionSubsystem::KickOffAutoReconnectSequence(const FUR
             lastRemoteURL
         ).SetNumTimesToTry(numTimesToTry)
         .SetConnectingToServerStatusText(LOCTEXT("ServerConnectionWidget_Status_AutoReconnect", "Reconnecting..."))
+        .SetFailedToConnectFormattedStatusText(LOCTEXT("ServerConnectionWidget_Status_AutoReconnectFail", "Failed to reconnect after {0} attempts"))
     );
 }
 
@@ -239,6 +245,7 @@ void USwordGameServerConnectionSubsystem::KickOffConnectionSequence(FConnectionS
     ensureMsgf(GetCurrentConnectionSequenceTry() == 0u, TEXT("This should be the first connection try in the sequence."));
 
     CurrentConnectionSequenceConnectingToServerStatusText = MoveTemp(args.ConnectingToServerStatusText);
+    CurrentConnectionSequenceFailedToConnectFormattedStatusText = MoveTemp(args.FailedToConnectFormattedStatusText);
     CurrentConnectionSequenceURL = MoveTemp(args.URL);
     CurrentConnectionSequenceTravelType = args.TravelType;
     CurrentConnectionSequenceNumTimesToTry = args.NumTimesToTry;
@@ -477,7 +484,7 @@ void USwordGameServerConnectionSubsystem::TryRetryConnect()
         {
             serverConnectionWidget->SetStatus(
                 FText::Format(
-                    LOCTEXT("ServerConnectionWidget_Status_TryRetryConnect_Failed", "Failed to connect after {0} attempts"),
+                    CurrentConnectionSequenceFailedToConnectFormattedStatusText,
                     CurrentConnectionSequenceTry
                 )
             );
@@ -696,6 +703,7 @@ void USwordGameServerConnectionSubsystem::ResetCurrentConnectionSequenceData()
 {
     CurrentConnectionSequenceLastURL = FURL();
     CurrentConnectionSequenceConnectingToServerStatusText = FText();
+    CurrentConnectionSequenceFailedToConnectFormattedStatusText = FText();
     CurrentConnectionSequenceURL = FString();
     CurrentConnectionSequenceTravelType = static_cast<ETravelType>(0u);
     CurrentConnectionSequenceNumTimesToTry = 0u;
