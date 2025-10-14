@@ -203,6 +203,11 @@ void ASwordGamePlayerController::NinjaDisableInvisibilityForTheInnocent() const
     HandleDisableInvisibilityForTheInnocent();
 }
 
+void ASwordGamePlayerController::NinjaEnableInvisibilityForTheInnocent() const
+{
+    HandleEnableInvisibilityForTheInnocent();
+}
+
 void ASwordGamePlayerController::EndPlayingState()
 {
     Super::EndPlayingState();

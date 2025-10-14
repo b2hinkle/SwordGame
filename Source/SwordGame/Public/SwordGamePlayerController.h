@@ -78,6 +78,9 @@ protected:
     UFUNCTION(BlueprintImplementableEvent)
     void HandleDisableInvisibilityForTheInnocent() const;
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleEnableInvisibilityForTheInnocent() const;
+
 public:
 
     UFUNCTION(BlueprintPure, meta = (WorldContext = worldContextObject))
@@ -159,4 +162,7 @@ public:
 
     UFUNCTION(Exec)
     void NinjaDisableInvisibilityForTheInnocent() const;
+
+    UFUNCTION(Exec)
+    void NinjaEnableInvisibilityForTheInnocent() const;
 };
