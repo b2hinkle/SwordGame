@@ -7,6 +7,9 @@
 
 #include "SwordGameCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS(config=Game)
 class ASwordGameCharacter : public ACharacter
 {
@@ -71,10 +74,18 @@ protected:
 	// End of APawn interface
 
 public:
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	FORCEINLINE USpringArmComponent& GetCameraBoom() const
+	{
+		check(CameraBoom);
+		return *CameraBoom;
+	}
+
+	FORCEINLINE UCameraComponent& GetFollowCamera() const
+	{
+		check(FollowCamera);
+		return *FollowCamera;
+	}
 
 public:
 
@@ -83,6 +94,7 @@ public:
 	// UObject overrides.
 
 	// AActor overrides.
+	virtual void BeginPlay() override;
 	virtual void Tick(float deltaSeconds) override;
 	virtual void PreReplication(IRepChangedPropertyTracker& changedPropertyTracker) override;
 	// AActor overrides.
@@ -90,10 +102,18 @@ public:
 	// APawn overrides.
 	virtual FRotator GetBaseAimRotation() const override;
 	virtual FRotator GetViewRotation() const override;
+	virtual void OnRep_Controller() override;
 	// APawn overrides.
 
 	FORCEINLINE uint16 GetRemoteViewYaw() const { return RemoteViewYaw16; }
 	void SetRemoteViewYaw(float newValue);
+
+protected:
+
+	/**
+	 * @brief This means to update any data or anything that depends on whether we are locally controlled or not.
+	 */
+	void UpdateLocalControllerDependentState();
 
 private:
 

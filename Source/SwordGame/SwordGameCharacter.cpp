@@ -59,6 +59,11 @@ ASwordGameCharacter::ASwordGameCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	// Set values for simulated proxies to help smooth the replicated view rotation.
+	GetCameraBoom().CameraRotationLagSpeed = 100.f;
+	GetCameraBoom().bUseCameraLagSubstepping = true;
+	GetCameraBoom().CameraLagMaxTimeStep = 0.005f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -150,6 +155,13 @@ void ASwordGameCharacter::MoveRight(float Value)
 	}
 }
 
+void ASwordGameCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UpdateLocalControllerDependentState();
+}
+
 void ASwordGameCharacter::Tick(float deltaSeconds)
 {
 	Super::Tick(deltaSeconds);
@@ -194,7 +206,29 @@ FRotator ASwordGameCharacter::GetViewRotation() const
 	return result;
 }
 
+void ASwordGameCharacter::OnRep_Controller()
+{
+	Super::OnRep_Controller();
+
+	UpdateLocalControllerDependentState();
+}
+
 void ASwordGameCharacter::SetRemoteViewYaw(float newValue)
 {
 	RemoteViewYaw16 = FRotator::CompressAxisToShort(newValue);
+}
+
+void ASwordGameCharacter::UpdateLocalControllerDependentState()
+{
+	if (!IsLocallyControlled())
+	{
+		// Enable camera rotation lag (smoothing) if not locally controlled, as replicated view rotation
+		// values come in pretty jittery.
+		GetCameraBoom().bEnableCameraRotationLag = true;
+	}
+	else
+	{
+		// Disable camera rotation lag for locally controlled characters, for a responsive experience.
+		GetCameraBoom().bEnableCameraRotationLag = false;
+	}
 }
