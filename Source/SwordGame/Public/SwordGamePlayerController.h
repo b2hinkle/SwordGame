@@ -28,10 +28,10 @@ protected:
 protected:
 
     UFUNCTION(BlueprintImplementableEvent)
-    void HandleRestartWorld() const;
+    void HandleRestartWorld();
 
     UFUNCTION(BlueprintImplementableEvent)
-    void HandleTravelToWorld(const FName& mapName) const;
+    void HandleTravelToWorld(const FName& mapName);
 
     UFUNCTION(BlueprintImplementableEvent)
     void HandleForceReconnectAllPlayers() const;
@@ -91,10 +91,10 @@ public:
     void NinjaJoin(const FName& address) const;
 
     UFUNCTION(Exec)
-    void NinjaRestart() const;
+    void NinjaRestart();
 
     UFUNCTION(Exec)
-    void NinjaTravel(const FName& mapName) const;
+    void NinjaTravel(const FName& mapName);
 
     UFUNCTION(Exec)
     void NinjaForceReconnectAllPlayers() const;

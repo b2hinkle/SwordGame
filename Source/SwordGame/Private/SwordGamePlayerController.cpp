@@ -118,12 +118,12 @@ void ASwordGamePlayerController::NinjaJoin(const FName& address) const
     thisMutable.ConsoleCommand(FString(MoveTemp(command)), shouldWriteToLog);
 }
 
-void ASwordGamePlayerController::NinjaRestart() const
+void ASwordGamePlayerController::NinjaRestart()
 {
     HandleRestartWorld();
 }
 
-void ASwordGamePlayerController::NinjaTravel(const FName& mapName) const
+void ASwordGamePlayerController::NinjaTravel(const FName& mapName)
 {
     HandleTravelToWorld(mapName);
 }
