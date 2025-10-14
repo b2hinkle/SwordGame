@@ -24,4 +24,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "SwordGame")
     static void OnPlayerMenuInputPress_RemoveByCtxObj(const UObject* ctxObj);
+
+    UFUNCTION(BlueprintCallable, Category = "SwordGame")
+    static void DestroyActorComponentBypassAllowAnyoneToDestroyMe(UActorComponent* component);
 };
