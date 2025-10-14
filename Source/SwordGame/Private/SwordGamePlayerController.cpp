@@ -191,3 +191,8 @@ void ASwordGamePlayerController::NinjaGiveTeleportAbility() const
 {
     HandleGiveTeleportAbility();
 }
+
+void ASwordGamePlayerController::NinjaDisableInvisibilityForTheInnocent() const
+{
+    HandleDisableInvisibilityForTheInnocent();
+}

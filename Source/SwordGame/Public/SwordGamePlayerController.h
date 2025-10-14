@@ -65,6 +65,9 @@ protected:
     UFUNCTION(BlueprintImplementableEvent)
     void HandleGiveTeleportAbility() const;
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleDisableInvisibilityForTheInnocent() const;
+
 public:
 
     UFUNCTION(BlueprintPure, meta = (WorldContext = worldContextObject))
@@ -143,4 +146,7 @@ public:
 
     UFUNCTION(Exec)
     void NinjaGiveTeleportAbility() const;
+
+    UFUNCTION(Exec)
+    void NinjaDisableInvisibilityForTheInnocent() const;
 };
