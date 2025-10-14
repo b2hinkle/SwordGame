@@ -5,6 +5,7 @@
 #include "ConsoleSettings.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Engine/Console.h"
+#include "../SwordGameCharacter.h"
 
 namespace
 {
@@ -35,6 +36,11 @@ namespace
                 );
         }
         );
+}
+
+ASwordGamePlayerController::ASwordGamePlayerController(const FObjectInitializer& objectInitializer)
+    : Super(objectInitializer)
+{
 }
 
 FString ASwordGamePlayerController::GetNetworkURL(const UObject* worldContextObject)
@@ -195,4 +201,17 @@ void ASwordGamePlayerController::NinjaGiveTeleportAbility() const
 void ASwordGamePlayerController::NinjaDisableInvisibilityForTheInnocent() const
 {
     HandleDisableInvisibilityForTheInnocent();
+}
+
+void ASwordGamePlayerController::EndPlayingState()
+{
+    Super::EndPlayingState();
+
+    if (APawn* pawn = GetPawn())
+    {
+        if (ASwordGameCharacter* swordGameCharacter = Cast<ASwordGameCharacter>(pawn))
+        {
+            swordGameCharacter->SetRemoteViewYaw(0.f);
+        }
+    }
 }

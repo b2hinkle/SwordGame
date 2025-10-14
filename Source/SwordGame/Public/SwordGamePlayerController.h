@@ -15,6 +15,16 @@ class SWORDGAME_API ASwordGamePlayerController : public APlayerController
 {
     GENERATED_BODY()
 
+public:
+
+    ASwordGamePlayerController(const FObjectInitializer& objectInitializer);
+
+protected:
+
+    // APlayerController overrides.
+    virtual void EndPlayingState() override;
+    // APlayerController overrides.
+
 protected:
 
     UFUNCTION(BlueprintImplementableEvent)
