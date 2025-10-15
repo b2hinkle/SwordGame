@@ -95,6 +95,17 @@ void ASwordGameCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ASwordGameCharacter::OnResetVR);
 }
 
+// BEGIN DUMMY FUNCTIONS
+// NOTE: This was to resolve a complecated error in Town level BP, and due to that map being too large for git, we have to resolve the problem this way.
+void ASwordGameCharacter::ServerRestartServer()
+{
+}
+
+void ASwordGameCharacter::ServerChangeServerMap(const FString& MapName)
+{
+}
+// END DUMMY FUNCTIONS
+
 
 
 

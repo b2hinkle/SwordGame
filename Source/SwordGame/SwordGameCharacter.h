@@ -75,6 +75,12 @@ protected:
 
 public:
 
+	UFUNCTION(BlueprintCallable)
+	void ServerRestartServer();
+
+	UFUNCTION(BlueprintCallable)
+	void ServerChangeServerMap(const FString& MapName);
+
 	FORCEINLINE USpringArmComponent& GetCameraBoom() const
 	{
 		check(CameraBoom);
