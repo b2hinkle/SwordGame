@@ -10,7 +10,10 @@ void UNinjaGameGI::Init()
 {
     Super::Init();
 
+#if !UE_SERVER
     FSlateApplication::Get().RegisterInputPreProcessor(MakeShared<FPlayerMenuInputProcessor>());
+#endif
+
 }
 
 //#include "Steamworks/Steamv139/sdk/public/steam/isteammatchmaking.h"

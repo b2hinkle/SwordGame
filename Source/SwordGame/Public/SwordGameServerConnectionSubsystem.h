@@ -83,6 +83,9 @@ class SWORDGAME_API USwordGameServerConnectionSubsystem : public UGameInstanceSu
 public:
 
     // USubsystem overrides.
+#if UE_SERVER
+    virtual bool ShouldCreateSubsystem(UObject* outer) const override { return false; }
+#endif
     virtual void Initialize(FSubsystemCollectionBase& collection) override;
     virtual void Deinitialize() override;
     // USubsystem overrides.
