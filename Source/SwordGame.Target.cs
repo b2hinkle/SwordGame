@@ -14,6 +14,7 @@ public class SwordGameTarget : TargetRules
         {
             bUseConsoleInShipping = true;
             bUseExecCommandsInShipping = true;
+            bUseLoggingInShipping = true;
         }
     }
 }
