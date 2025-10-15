@@ -96,7 +96,7 @@ void ASwordGameCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 }
 
 // BEGIN DUMMY FUNCTIONS
-// NOTE: This was to resolve a complecated error in Town level BP, and due to that map being too large for git, we have to resolve the problem this way.
+// NOTE: This was to resolve missing function errors in Town level BP, and due to that map being too large for git, we have to resolve the problem this way.
 void ASwordGameCharacter::ServerRestartServer()
 {
 }
