@@ -221,6 +221,11 @@ void ASwordGamePlayerController::NinjaEnableInvisibilityForTheInnocent() const
     HandleEnableInvisibilityForTheInnocent();
 }
 
+void ASwordGamePlayerController::NinjaChangeMaxInvisibility(const float value) const
+{
+    HandleChangeMaxInvisibilityStamina(value);
+}
+
 void ASwordGamePlayerController::NinjaServerExec(const FString& commandToExecuteOnTheServer)
 {
     ServerNinjaExec(commandToExecuteOnTheServer);

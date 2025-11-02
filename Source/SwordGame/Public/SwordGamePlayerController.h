@@ -81,6 +81,9 @@ protected:
     UFUNCTION(BlueprintImplementableEvent)
     void HandleEnableInvisibilityForTheInnocent() const;
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void HandleChangeMaxInvisibilityStamina(const float value) const;
+
 public:
 
     UFUNCTION(BlueprintPure, meta = (WorldContext = worldContextObject))
@@ -165,6 +168,9 @@ public:
 
     UFUNCTION(Exec)
     void NinjaEnableInvisibilityForTheInnocent() const;
+
+    UFUNCTION(Exec)
+    void NinjaChangeMaxInvisibility(const float value) const;
 
     /**
      * Execute a console command on the server.
