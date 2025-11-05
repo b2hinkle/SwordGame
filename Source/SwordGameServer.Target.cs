@@ -10,5 +10,10 @@ public class SwordGameServerTarget : TargetRules
         Type = TargetType.Server;
         DefaultBuildSettings = BuildSettingsVersion.Latest;
         IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+
+        // Our game is jank lol. We have lots of features through console as of now.
+        {
+            bUseLoggingInShipping = true;
+        }
     }
 }
